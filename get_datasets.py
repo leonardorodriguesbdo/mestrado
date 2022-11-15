@@ -36,8 +36,9 @@ def save_dataset(name, X, y):
     n_features = metrics.metric_dc_num_features(X)
     n_classes = metrics.metric_dc_num_classes(y)
     balanced = metrics.metric_dc_dataset_is_balanced(y)
+    dim_int = metrics.metric_dc_intrinsic_dim(X)
 
-    print(name, n_samples, n_features, n_classes, balanced, X.shape)
+    print(name, n_samples, n_features, n_classes, balanced, dim_int, X.shape)
 
     for l in np.unique(y):
         print('-->', l, np.count_nonzero(y == l))
@@ -79,6 +80,13 @@ def process_bank():
 
     save_dataset('bank', X, y)
 
+def process_cnae9():
+    df = pd.read_csv('data/cnae9/CNAE-9.data', header=None)
+    y = np.array(df[0])
+    X = np.array(df.drop(0, axis=1))
+    save_dataset('cnae9', X, y)
+
+
 # código
 if __name__ == '__main__':
     base_dir = './data'
@@ -87,6 +95,9 @@ if __name__ == '__main__':
 
     datasets['bank'] = [
         'http://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank-additional.zip']
+    datasets['cnae9'] = [
+        'http://archive.ics.uci.edu/ml/machine-learning-databases/00233/CNAE-9.data']
+    
 
     parser = argparse.ArgumentParser(
         description='Projection Survey Dataset Downloader')
